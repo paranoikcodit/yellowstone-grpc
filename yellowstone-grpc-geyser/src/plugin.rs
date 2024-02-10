@@ -4,6 +4,7 @@ use {
         grpc::{GrpcService, Message},
         prom::{self, PrometheusService, MESSAGE_QUEUE_SIZE},
     },
+    log::info,
     solana_geyser_plugin_interface::geyser_plugin_interface::{
         GeyserPlugin, GeyserPluginError, ReplicaAccountInfoVersions, ReplicaBlockInfoVersions,
         ReplicaEntryInfoVersions, ReplicaTransactionInfoVersions, Result as PluginResult,
@@ -11,6 +12,8 @@ use {
     },
     std::{
         concat, env,
+        fs::File,
+        io::Read,
         sync::{
             atomic::{AtomicUsize, Ordering},
             Arc,
@@ -61,7 +64,12 @@ impl GeyserPlugin for Plugin {
     }
 
     fn on_load(&mut self, config_file: &str) -> PluginResult<()> {
-        let config = Config::load_from_file(config_file)?;
+        info!("Loading config from: {config_file}");
+
+        let mut buffer = String::new();
+
+        File::open(config_file)?.read_to_string(&mut buffer)?;
+        let config = Config::load_from_str(&buffer)?;
 
         // Setup logger
         solana_logger::setup_with_default(&config.log.level);

@@ -23,7 +23,7 @@ pub struct Config {
 }
 
 impl Config {
-    fn load_from_str(config: &str) -> PluginResult<Self> {
+    pub fn load_from_str(config: &str) -> PluginResult<Self> {
         serde_json::from_str(config).map_err(|error| GeyserPluginError::ConfigFileReadError {
             msg: error.to_string(),
         })
