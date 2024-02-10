@@ -76,6 +76,8 @@ impl GeyserPlugin for Plugin {
         File::open(config_file)?.read_to_string(&mut buffer)?;
         let config = Config::load_from_str(&buffer)?;
 
+        info!("123");
+
         // Setup logger
 
         // Create inner
