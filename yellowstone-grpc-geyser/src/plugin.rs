@@ -69,11 +69,11 @@ impl GeyserPlugin for Plugin {
         solana_logger::setup_with_default("info");
 
         info!("Loading config from: {config_file}");
-        info!("{}", PathBuf::from_str(config_file).unwrap().exists());
 
         let mut buffer = String::new();
 
-        File::open(config_file)?.read_to_string(&mut buffer)?;
+        File::open(PathBuf::from_str(config_file).unwrap().as_path())?
+            .read_to_string(&mut buffer)?;
         let config = Config::load_from_str(&buffer)?;
 
         info!("123");
