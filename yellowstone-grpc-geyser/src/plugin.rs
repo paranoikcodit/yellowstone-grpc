@@ -14,6 +14,8 @@ use {
         concat, env,
         fs::File,
         io::Read,
+        path::PathBuf,
+        str::FromStr,
         sync::{
             atomic::{AtomicUsize, Ordering},
             Arc,
@@ -67,6 +69,7 @@ impl GeyserPlugin for Plugin {
         solana_logger::setup_with_default("info");
 
         info!("Loading config from: {config_file}");
+        info!("{}", PathBuf::from_str(config_file).unwrap().exists());
 
         let mut buffer = String::new();
 
