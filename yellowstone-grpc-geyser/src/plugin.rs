@@ -64,6 +64,8 @@ impl GeyserPlugin for Plugin {
     }
 
     fn on_load(&mut self, config_file: &str) -> PluginResult<()> {
+        solana_logger::setup_with_default("info");
+
         info!("Loading config from: {config_file}");
 
         let mut buffer = String::new();
@@ -72,7 +74,6 @@ impl GeyserPlugin for Plugin {
         let config = Config::load_from_str(&buffer)?;
 
         // Setup logger
-        solana_logger::setup_with_default(&config.log.level);
 
         // Create inner
         let runtime = Builder::new_multi_thread()
